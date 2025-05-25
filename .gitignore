@@ -3,6 +3,7 @@ venv/
 
 # Byte-compiled / optimized files
 __pycache__/
+*.pyc
 *.py[cod]
 *$py.class
 
@@ -12,6 +13,7 @@ __pycache__/
 # Distribution / packaging
 build/
 dist/
+outputs/
 *.egg-info/
 
 # UI session logs from start_ui.bat
