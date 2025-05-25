@@ -17,40 +17,28 @@ except OSError:
         nlp.add_pipe("sentencizer")
 
 def extract_steps(text):
-    """Extract numbered steps from Turkish process text.
+    """Extract simplified action steps from free-form Turkish process text."""
+    doc = nlp(text)
+    steps = []
+    seen = set()
 
-    The function joins lines that belong to the same numeric step and filters
-    out blank or extremely short fragments.
-    """
-
-    import re
-
-    step_pattern = re.compile(r"^(\d{1,2})\.\s*")
-    lines = text.splitlines()
-
-    steps: list[str] = []
-    current_parts: list[str] = []
-
-    for line in lines:
-        line = line.strip()
-        if not line:
-            continue
-
-        if step_pattern.match(line):
-            if current_parts:
-                step_text = " ".join(current_parts).strip()
-                if len(step_text.split()) > 1:
-                    steps.append(step_text)
-            line = step_pattern.sub("", line).strip()
-            current_parts = [line]
-        else:
-            if current_parts:
-                current_parts.append(line)
-
-    if current_parts:
-        step_text = " ".join(current_parts).strip()
-        if len(step_text.split()) > 1:
-            steps.append(step_text)
+    for sent in doc.sents:
+        for token in sent:
+            if token.pos_ != "VERB" or token.dep_ not in {"ROOT", "conj"}:
+                continue
+            obj = None
+            for child in token.children:
+                if child.dep_ in {"obj", "obl"} and child.pos_ in {"NOUN", "PROPN"}:
+                    obj = child.lemma_
+                    break
+            # nominalize the verb lemma
+            lemma = token.lemma_
+            if lemma.endswith("mek") or lemma.endswith("mak"):
+                lemma = lemma[:-3] + "me"
+            phrase = f"{obj.capitalize() + ' ' if obj else ''}{lemma}"
+            if phrase not in seen:
+                seen.add(phrase)
+                steps.append(phrase)
 
     return steps
 
