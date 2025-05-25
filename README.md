@@ -91,9 +91,9 @@ streamlit run app.py          # run inside the ui folder
 ```
 
 On Windows systems you can simply double-click `start_ui.bat` to launch the web
-interface. Unix users may run `./start_ui.sh` if the script is available.
-
-These commands assume the packages in `requirements.txt` and the `tr_core_news_md` spaCy model are installed.
+interface. The batch script creates a local virtual environment and installs all
+required packages on first run. Unix users may run `./start_ui.sh` if the script
+is available and handle dependency installation themselves.
 
 ## Citation
 
