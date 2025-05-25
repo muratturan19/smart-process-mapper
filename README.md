@@ -4,8 +4,14 @@ This project contains a simple parser that extracts ordered process steps from a
 
 ## Running the parser
 
-Execute the parser directly to process the provided `example_input.txt` and
-write the ordered steps to a JSON file:
+Install dependencies and download the Turkish language model before running the parser:
+
+```bash
+pip install -r requirements.txt
+python -m spacy download tr_core_news_sm
+```
+
+Then execute the parser to process the provided `example_input.txt` and write the ordered steps to a JSON file:
 
 ```bash
 python process_parser.py
