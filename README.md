@@ -81,13 +81,16 @@ See the generated [process_map.html](process_map.html) for an example.
 
 ## Running the Streamlit UI
 
-An interactive web interface is included. Launch it with:
+An interactive web interface is included. You can start it from the project root or from inside the `ui` directory:
 
 ```bash
-streamlit run ui/app.py
+streamlit run ui/app.py       # run from the project root
+# or
+cd ui
+streamlit run app.py          # run inside the ui folder
 ```
 
-Open the URL shown in the terminal to test the extractor in your browser.
+These commands assume the packages in `requirements.txt` and the `tr_core_news_md` spaCy model are installed.
 
 ## Citation
 
