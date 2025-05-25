@@ -1,6 +1,7 @@
 # smart-process-mapper
 
 This project contains a simple parser that extracts ordered process steps from a Turkish text file.
+For a Turkish version of this document, see [README_TR.md](README_TR.md).
 
 ## Running the parser
 
