@@ -19,7 +19,8 @@ pip install -r "%BASE_DIR%requirements.txt" >> "%BASE_DIR%install.log" 2>&1
 if %ERRORLEVEL% neq 0 goto install_fail
 pip install https://huggingface.co/turkish-nlp-suite/tr_core_news_md/resolve/main/tr_core_news_md-1.0-py3-none-any.whl >> "%BASE_DIR%install.log" 2>&1
 if %ERRORLEVEL% neq 0 goto install_fail
-pip install "%BASE_DIR%" >> "%BASE_DIR%install.log" 2>&1
+rem Append a dot so the path does not end with a bare backslash
+pip install "%BASE_DIR%." >> "%BASE_DIR%install.log" 2>&1
 if %ERRORLEVEL% neq 0 goto install_fail
 python -m spacy link tr_core_news_md tr_core_news_md >> "%BASE_DIR%install.log" 2>&1
 if %ERRORLEVEL% neq 0 goto install_fail
