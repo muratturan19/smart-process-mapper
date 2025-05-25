@@ -12,6 +12,29 @@ pip install .
 python -m spacy download tr_core_news_sm
 ```
 
+### Building a zip archive
+
+If you need an offline bundle, run the helper script to package all
+dependencies and the Turkish spaCy model:
+
+```bash
+bash scripts/build_zip.sh
+```
+
+This creates `dist/smart-process-mapper.zip` containing the project files and
+installed libraries.
+
+### Download and extraction
+
+Download the zip from the releases page or build it yourself as shown above.
+Then extract it and run the tools from the `package` directory:
+
+```bash
+unzip smart-process-mapper.zip
+cd package
+python process_parser.py example_input.txt parsed_steps.json
+```
+
 ## Running the parser
 
 To extract ordered steps from a text file, run:
