@@ -23,7 +23,8 @@ if option == "Upload a file":
     if uploaded_file is not None:
         text = uploaded_file.read().decode("utf-8")
 else:
-    with open("example_input.txt", "r", encoding="utf-8") as f:
+    example_path = Path(__file__).resolve().parents[1] / "example_input.txt"
+    with open(example_path, "r", encoding="utf-8") as f:
         text = f.read()
 
 if text:
