@@ -53,7 +53,7 @@ if text:
 
         output_dir = Path(__file__).resolve().parents[1] / "outputs"
         output_dir.mkdir(exist_ok=True)
-        net.save_graph(output_dir / "process_map_interactive.html")
+        net.save_graph(str(output_dir / "process_map_interactive.html"))
 
         st.components.v1.html(html_content, height=500, scrolling=True)
 
