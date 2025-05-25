@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Simple tools for parsing Turkish process text and drawing maps."
 authors = [{name = "Smart Process Mapper"}]
 readme = "README.md"
-license = {text = "MIT"}
+license = "MIT"
 requires-python = ">=3.10,<3.11"
 dependencies = [
     "spacy==3.4.2",
@@ -24,3 +24,11 @@ dependencies = [
 smart-process-parse = "process_parser:parse_and_save"
 smart-step-extract = "semantic_step_extractor:main"
 draw-process-map = "draw_process_map:main"
+
+[tool.setuptools]
+py-modules = [
+    "process_parser",
+    "semantic_step_extractor",
+    "draw_process_map",
+]
+packages = []
