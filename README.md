@@ -5,19 +5,17 @@ For a Turkish version of this document, see [README_TR.md](README_TR.md).
 
 ## Installation
 
-This project is tested with **spaCy 3.7**. Clone the Turkish model repository and install the medium model before installing this package:
+This project is tested with **spaCy 3.7**. Install the Turkish NLP model from Hugging Face before installing this package:
 
 ```bash
-git clone https://github.com/turkish-nlp-suite/turkish-spacy-models
-pip install -e turkish-spacy-models/tr_core_news_md
-python -m spacy link tr_core_news_md tr_core_news_md
+pip install https://huggingface.co/turkish-nlp-suite/tr_core_news_md/resolve/main/tr_core_news_md-any-py3-none-any.whl
 pip install .
 ```
 
 ### Building a zip archive
 
 If you need an offline bundle, run the helper script to package all
-dependencies and the Turkish spaCy model:
+dependencies and the Turkish spaCy model from Hugging Face:
 
 ```bash
 bash scripts/build_zip.sh
@@ -86,3 +84,9 @@ streamlit run ui/app.py
 ```
 
 Open the URL shown in the terminal to test the extractor in your browser.
+
+## Citation
+
+If you use the `tr_core_news_md` model, please cite:
+
+Altınok, 2023.
