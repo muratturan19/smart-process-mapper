@@ -49,6 +49,8 @@ Düzenle
 Python 3.10
 Gerekli kütüphaneler: spaCy 3.4.2, numpy 1.23.5 ve thinc 8.1.10.
 
+Streamlit ve diğer bağımlılıkları yüklemek için `pip install -r requirements.txt` komutunu çalıştırın.
+
 🧱 Dosya Yapısı
 bash
 Kopyala
