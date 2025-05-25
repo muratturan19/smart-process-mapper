@@ -4,13 +4,14 @@ import json
 
 
 def draw_process_graph(input_file: str, output_path: str = "process_map.png") -> None:
-    """Generate a PNG visualization of previously parsed process steps.
+    """Generate a PNG visualization from cleaned process steps extracted by
+    ``semantic_step_extractor.py``.
 
     Parameters
     ----------
     input_file : str
-        Path to the JSON file containing the parsed process steps produced by
-        ``process_parser.py``.
+        Path to the JSON file containing the cleaned steps produced by
+        ``semantic_step_extractor.py``.
     output_path : str, optional
         Desired output PNG file path. Defaults to ``process_map.png``.
     """
@@ -31,7 +32,8 @@ def draw_process_graph(input_file: str, output_path: str = "process_map.png") ->
     # Create nodes with numbered labels
     for idx, step in enumerate(steps, 1):
         node_id = f"step{idx}"
-        label = f"{idx}. {step['step']}"
+        text = step["step"] if isinstance(step, dict) else step
+        label = f"{idx}. {text}"
         dot.node(node_id, label)
 
     # Connect nodes sequentially
@@ -45,6 +47,6 @@ def draw_process_graph(input_file: str, output_path: str = "process_map.png") ->
 
 
 if __name__ == "__main__":
-    in_file = sys.argv[1] if len(sys.argv) > 1 else "parsed_steps.json"
+    in_file = sys.argv[1] if len(sys.argv) > 1 else "cleaned_steps.json"
     out_file = sys.argv[2] if len(sys.argv) > 2 else "process_map.png"
     draw_process_graph(in_file, out_file)
