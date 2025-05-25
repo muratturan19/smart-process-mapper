@@ -74,3 +74,13 @@ draw-process-map cleaned_steps.json process_map.html --format html
 ```
 
 See the generated [process_map.html](process_map.html) for an example.
+
+## Running the Streamlit UI
+
+An interactive web interface is included. Launch it with:
+
+```bash
+streamlit run ui/app.py
+```
+
+Open the URL shown in the terminal to test the extractor in your browser.
