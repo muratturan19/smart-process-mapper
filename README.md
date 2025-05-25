@@ -5,7 +5,7 @@ For a Turkish version of this document, see [README_TR.md](README_TR.md).
 
 ## Installation
 
-Install the package and download the Turkish spaCy model:
+This project is tested with **spaCy 3.7**. Install the package and download the Turkish spaCy model:
 
 ```bash
 pip install .
