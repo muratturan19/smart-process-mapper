@@ -22,6 +22,8 @@ cp -r "$ROOT_DIR/ui" "$PKG_DIR/"
 cp "$ROOT_DIR/README.md" "$PKG_DIR/"
 cp "$ROOT_DIR/README_TR.md" "$PKG_DIR/"
 cp "$ROOT_DIR/example_input.txt" "$PKG_DIR/"
+cp "$ROOT_DIR/start_ui.bat" "$PKG_DIR/"
+[ -f "$ROOT_DIR/start_ui.sh" ] && cp "$ROOT_DIR/start_ui.sh" "$PKG_DIR/"
 
 cd "$DIST_DIR"
 ZIP_NAME="smart-process-mapper.zip"
