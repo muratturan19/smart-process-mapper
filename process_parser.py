@@ -8,7 +8,10 @@ try:
     nlp = spacy.load("tr_core_news_md")
 except OSError:
     warnings.warn(
-        "Turkish spaCy model 'tr_core_news_md' not found. Using blank tokenizer"
+        "spaCy model 'tr_core_news_md' is not installed. "
+        "Install it with "
+        "`pip install https://huggingface.co/turkish-nlp-suite/tr_core_news_md/resolve/main/tr_core_news_md-any-py3-none-any.whl` "
+        "and rerun. Falling back to a blank Turkish pipeline."
     )
     nlp = spacy.blank("tr")
     if "sentencizer" not in nlp.pipe_names:

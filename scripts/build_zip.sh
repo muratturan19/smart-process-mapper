@@ -13,13 +13,8 @@ echo "Installing Python dependencies into $PKG_DIR"
 pip install -r "$ROOT_DIR/requirements.txt" --target "$PKG_DIR"
 
 # download Turkish spaCy model
-echo "Adding Turkish spaCy model if available"
-if [ -d "$ROOT_DIR/turkish-spacy-models/tr_core_news_md" ]; then
-    pip install -e "$ROOT_DIR/turkish-spacy-models/tr_core_news_md" --target "$PKG_DIR"
-    python -m spacy link tr_core_news_md tr_core_news_md
-else
-    echo "Turkish model not found; proceeding without it"
-fi
+echo "Adding Turkish spaCy model from Hugging Face"
+pip install https://huggingface.co/turkish-nlp-suite/tr_core_news_md/resolve/main/tr_core_news_md-any-py3-none-any.whl --target "$PKG_DIR"
 
 # copy project scripts
 cp "$ROOT_DIR"/*.py "$PKG_DIR"/
