@@ -15,7 +15,7 @@ dependencies = [
     "numpy==1.23.5",
     "thinc==8.1.10",
     "graphviz>=0.19",
-    "streamlit",
+    "streamlit==1.28.2",
     "pyvis",
 ]
 
