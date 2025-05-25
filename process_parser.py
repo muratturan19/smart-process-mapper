@@ -1,5 +1,7 @@
 from typing import List, Dict, Any
 import re
+import json
+import sys
 
 
 def parse_process(file_path: str) -> List[Dict[str, Any]]:
@@ -34,6 +36,23 @@ def parse_process(file_path: str) -> List[Dict[str, Any]]:
     return sorted(steps, key=lambda x: x["order"])
 
 
+def parse_and_save(input_file: str, output_file: str = "parsed_steps.json") -> None:
+    """Parse the given file and save the ordered steps as JSON.
+
+    Parameters
+    ----------
+    input_file : str
+        Path to the text file containing the raw process description.
+    output_file : str, optional
+        Destination JSON file. Defaults to ``parsed_steps.json``.
+    """
+    steps = parse_process(input_file)
+    with open(output_file, "w", encoding="utf-8") as out_f:
+        json.dump(steps, out_f, ensure_ascii=False, indent=2)
+    print(f"Parsed steps saved to {output_file}")
+
+
 if __name__ == "__main__":
-    parsed = parse_process("example_input.txt")
-    print(parsed)
+    in_file = sys.argv[1] if len(sys.argv) > 1 else "example_input.txt"
+    out_file = sys.argv[2] if len(sys.argv) > 2 else "parsed_steps.json"
+    parse_and_save(in_file, out_file)
