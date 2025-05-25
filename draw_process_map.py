@@ -1,15 +1,16 @@
 import sys
 import os
-from process_parser import parse_process
+import json
 
 
 def draw_process_graph(input_file: str, output_path: str = "process_map.png") -> None:
-    """Generate a PNG visualization of the parsed process steps.
+    """Generate a PNG visualization of previously parsed process steps.
 
     Parameters
     ----------
     input_file : str
-        Path to the text file containing the process description.
+        Path to the JSON file containing the parsed process steps produced by
+        ``process_parser.py``.
     output_path : str, optional
         Desired output PNG file path. Defaults to ``process_map.png``.
     """
@@ -19,7 +20,8 @@ def draw_process_graph(input_file: str, output_path: str = "process_map.png") ->
         print("graphviz package not found. Please install it to generate the PNG.")
         return
 
-    steps = parse_process(input_file)
+    with open(input_file, "r", encoding="utf-8") as f:
+        steps = json.load(f)
     if not steps:
         print("No steps detected. Nothing to draw.")
         return
@@ -43,6 +45,6 @@ def draw_process_graph(input_file: str, output_path: str = "process_map.png") ->
 
 
 if __name__ == "__main__":
-    in_file = sys.argv[1] if len(sys.argv) > 1 else "example_input.txt"
+    in_file = sys.argv[1] if len(sys.argv) > 1 else "parsed_steps.json"
     out_file = sys.argv[2] if len(sys.argv) > 2 else "process_map.png"
     draw_process_graph(in_file, out_file)
