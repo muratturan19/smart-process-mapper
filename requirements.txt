@@ -1,4 +1,6 @@
-spacy>=3.4.2,<3.5.0
+spacy==3.4.2
+numpy==1.23.5
+thinc==8.1.10
 streamlit
 pyvis
 graphviz>=0.20.1
