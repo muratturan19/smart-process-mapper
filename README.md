@@ -5,8 +5,8 @@ For a Turkish version of this document, see [README_TR.md](README_TR.md).
 
 ## Installation
 
-This project requires **spaCy >=3.4.2,<3.5.0**. Install the Turkish NLP model from Hugging Face before installing this package:
-
+This project was tested only with **Python 3.10**.
+The tested versions are spaCy 3.4.2, numpy 1.23.5 and thinc 8.1.10. Install the Turkish NLP model from Hugging Face before installing this package:
 ```bash
 pip install https://huggingface.co/turkish-nlp-suite/tr_core_news_md/resolve/main/tr_core_news_md-any-py3-none-any.whl
 pip install .
