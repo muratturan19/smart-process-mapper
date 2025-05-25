@@ -16,6 +16,7 @@ dependencies = [
     "thinc==8.1.10",
     "graphviz>=0.19",
     "streamlit==1.28.2",
+    "matplotlib",
     "pyvis",
 ]
 
