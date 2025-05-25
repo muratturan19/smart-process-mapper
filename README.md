@@ -3,19 +3,21 @@
 This project contains a simple parser that extracts ordered process steps from a Turkish text file.
 For a Turkish version of this document, see [README_TR.md](README_TR.md).
 
-## Running the parser
+## Installation
 
-Install dependencies and download the Turkish language model before running the parser:
+Install the package and download the Turkish spaCy model:
 
 ```bash
-pip install -r requirements.txt
+pip install .
 python -m spacy download tr_core_news_sm
 ```
 
-Then execute the parser to process the provided `example_input.txt` and write the ordered steps to a JSON file:
+## Running the parser
+
+To extract ordered steps from a text file, run:
 
 ```bash
-python process_parser.py
+smart-process-parse example_input.txt parsed_steps.json
 ```
 
 This command creates ``parsed_steps.json`` in the current directory.
@@ -33,10 +35,11 @@ Example content of ``parsed_steps.json``:
 
 ## Generating a process map
 
-After obtaining ``cleaned_steps.json`` with ``semantic_step_extractor.py``, you can produce a visual process map using ``draw_process_map.py``:
+After obtaining ``cleaned_steps.json`` with ``smart-step-extract``, you can produce a visual process map using ``draw-process-map``:
 
 ```bash
-python draw_process_map.py cleaned_steps.json
+smart-step-extract example_input.txt cleaned_steps.json
+draw-process-map cleaned_steps.json
 ```
 
 The script reads the JSON file and outputs ``process_map.png`` in the current directory. The ``graphviz`` Python package and Graphviz binaries are required for PNG generation.
