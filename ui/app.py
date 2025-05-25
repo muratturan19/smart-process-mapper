@@ -29,6 +29,10 @@ else:
 
 if text:
     steps = extract_steps(text)
+    if not steps:
+        st.warning(
+            "No steps were extracted. Ensure the spaCy model is installed and the text is a valid Turkish process description."
+        )
     st.subheader("Extracted Steps")
     for idx, step in enumerate(steps, 1):
         st.write(f"{idx}. {step}")
