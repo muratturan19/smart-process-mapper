@@ -32,10 +32,10 @@ Example content of ``parsed_steps.json``:
 
 ## Generating a process map
 
-After obtaining ``parsed_steps.json``, you can produce a visual process map using ``draw_process_map.py``:
+After obtaining ``cleaned_steps.json`` with ``semantic_step_extractor.py``, you can produce a visual process map using ``draw_process_map.py``:
 
 ```bash
-python draw_process_map.py parsed_steps.json
+python draw_process_map.py cleaned_steps.json
 ```
 
 The script reads the JSON file and outputs ``process_map.png`` in the current directory. The ``graphviz`` Python package and Graphviz binaries are required for PNG generation.
