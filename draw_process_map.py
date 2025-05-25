@@ -1,6 +1,6 @@
+import argparse
 import json
 import os
-import sys
 from typing import List
 
 
@@ -77,6 +77,20 @@ def draw_process_graph(input_file: str, output_path: str = "process_map.png") ->
 
 
 if __name__ == "__main__":
-    in_file = sys.argv[1] if len(sys.argv) > 1 else "cleaned_steps.json"
-    out_file = sys.argv[2] if len(sys.argv) > 2 else "process_map.png"
-    draw_process_graph(in_file, out_file)
+    parser = argparse.ArgumentParser(
+        description="Generate a visual process map from a JSON step file."
+    )
+    parser.add_argument(
+        "input_file",
+        nargs="?",
+        default="cleaned_steps.json",
+        help="JSON file containing ordered or cleaned steps.",
+    )
+    parser.add_argument(
+        "output_file",
+        nargs="?",
+        default="process_map.png",
+        help="Output image file path.",
+    )
+    args = parser.parse_args()
+    draw_process_graph(args.input_file, args.output_file)
