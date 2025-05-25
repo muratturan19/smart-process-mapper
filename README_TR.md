@@ -46,8 +46,8 @@ Düzenle
 txt
 Kopyala
 Düzenle
-Python 3.7+
-Ek kütüphane gerekmez (yalnızca re modülü kullanılır).
+Python 3.10
+Gerekli kütüphaneler: spaCy 3.4.2, numpy 1.23.5 ve thinc 8.1.10.
 
 🧱 Dosya Yapısı
 bash
