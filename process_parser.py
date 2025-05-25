@@ -1,6 +1,6 @@
 from typing import List, Dict, Any
+import argparse
 import json
-import sys
 import spacy
 
 try:
@@ -71,6 +71,20 @@ def parse_and_save(input_file: str, output_file: str = "parsed_steps.json") -> N
 
 
 if __name__ == "__main__":
-    in_file = sys.argv[1] if len(sys.argv) > 1 else "example_input.txt"
-    out_file = sys.argv[2] if len(sys.argv) > 2 else "parsed_steps.json"
-    parse_and_save(in_file, out_file)
+    parser = argparse.ArgumentParser(
+        description="Parse a Turkish process description and save ordered steps"
+    )
+    parser.add_argument(
+        "input_file",
+        nargs="?",
+        default="example_input.txt",
+        help="Path to the text file containing the raw process description.",
+    )
+    parser.add_argument(
+        "output_file",
+        nargs="?",
+        default="parsed_steps.json",
+        help="Destination JSON file for the extracted steps.",
+    )
+    args = parser.parse_args()
+    parse_and_save(args.input_file, args.output_file)

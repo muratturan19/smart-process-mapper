@@ -1,5 +1,5 @@
+import argparse
 import json
-import sys
 import spacy
 
 try:
@@ -44,6 +44,20 @@ def main(in_file: str = "example_input.txt", out_file: str = "cleaned_steps.json
     print(f"Cleaned steps saved to {out_file}")
 
 if __name__ == "__main__":
-    in_path = sys.argv[1] if len(sys.argv) > 1 else "example_input.txt"
-    out_path = sys.argv[2] if len(sys.argv) > 2 else "cleaned_steps.json"
-    main(in_path, out_path)
+    parser = argparse.ArgumentParser(
+        description="Extract simplified steps from a Turkish process text."
+    )
+    parser.add_argument(
+        "input_file",
+        nargs="?",
+        default="example_input.txt",
+        help="Text file containing the raw process description.",
+    )
+    parser.add_argument(
+        "output_file",
+        nargs="?",
+        default="cleaned_steps.json",
+        help="Destination JSON file for the extracted steps.",
+    )
+    args = parser.parse_args()
+    main(args.input_file, args.output_file)
