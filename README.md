@@ -5,11 +5,13 @@ For a Turkish version of this document, see [README_TR.md](README_TR.md).
 
 ## Installation
 
-This project is tested with **spaCy 3.7**. Install the package and download the Turkish spaCy model:
+This project is tested with **spaCy 3.7**. Clone the Turkish model repository and install the medium model before installing this package:
 
 ```bash
+git clone https://github.com/turkish-nlp-suite/turkish-spacy-models
+pip install -e turkish-spacy-models/tr_core_news_md
+python -m spacy link tr_core_news_md tr_core_news_md
 pip install .
-python -m spacy download tr_core_news_sm
 ```
 
 ### Building a zip archive

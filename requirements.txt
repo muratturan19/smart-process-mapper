@@ -3,6 +3,8 @@ streamlit
 pyvis
 graphviz>=0.20.1
 
-# Not:
-# After installing, run this to download Turkish NLP model:
-#   python -m spacy download tr_core_news_sm
+# After installing these packages, obtain the Turkish NLP model from
+# https://github.com/turkish-nlp-suite/turkish-spacy-models
+# and install it with:
+#   pip install -e turkish-spacy-models/tr_core_news_md
+#   python -m spacy link tr_core_news_md tr_core_news_md

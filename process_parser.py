@@ -2,13 +2,17 @@ from typing import List, Dict, Any
 import argparse
 import json
 import spacy
+import warnings
 
 try:
-    nlp = spacy.load("tr_core_news_sm")
-except OSError as exc:
-    raise RuntimeError(
-        "Turkish spaCy model not found. Run 'python -m spacy download tr_core_news_sm'"
-    ) from exc
+    nlp = spacy.load("tr_core_news_md")
+except OSError:
+    warnings.warn(
+        "Turkish spaCy model 'tr_core_news_md' not found. Using blank tokenizer"
+    )
+    nlp = spacy.blank("tr")
+    if "sentencizer" not in nlp.pipe_names:
+        nlp.add_pipe("sentencizer")
 
 
 def parse_process(file_path: str) -> List[Dict[str, Any]]:

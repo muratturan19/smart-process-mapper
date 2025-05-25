@@ -13,8 +13,13 @@ echo "Installing Python dependencies into $PKG_DIR"
 pip install -r "$ROOT_DIR/requirements.txt" --target "$PKG_DIR"
 
 # download Turkish spaCy model
-echo "Downloading spaCy model to local package"
-python -m spacy download tr_core_news_sm --direct --target "$PKG_DIR"
+echo "Adding Turkish spaCy model if available"
+if [ -d "$ROOT_DIR/turkish-spacy-models/tr_core_news_md" ]; then
+    pip install -e "$ROOT_DIR/turkish-spacy-models/tr_core_news_md" --target "$PKG_DIR"
+    python -m spacy link tr_core_news_md tr_core_news_md
+else
+    echo "Turkish model not found; proceeding without it"
+fi
 
 # copy project scripts
 cp "$ROOT_DIR"/*.py "$PKG_DIR"/
