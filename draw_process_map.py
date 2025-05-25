@@ -58,8 +58,30 @@ def _build_graph(steps: List[str], output_path: str) -> None:
     dot.render(filename, cleanup=True)
 
 
-def draw_process_graph(input_file: str, output_path: str = "process_map.png") -> None:
-    """Generate a styled PNG process map from ``input_file``."""
+def _build_html_graph(steps: List[str], output_path: str) -> None:
+    """Create an interactive HTML process map using ``pyvis``."""
+    try:
+        from pyvis.network import Network
+    except ImportError as exc:  # pragma: no cover - library optional
+        raise RuntimeError(
+            "pyvis package not found. Please install it to use HTML output."
+        ) from exc
+
+    net = Network(height="500px", directed=True)
+    for idx, text in enumerate(steps, 1):
+        net.add_node(idx, label=f"{idx}. {text}")
+        if idx > 1:
+            net.add_edge(idx - 1, idx)
+
+    net.write_html(output_path)
+
+
+def draw_process_graph(
+    input_file: str,
+    output_path: str = "process_map.png",
+    fmt: str = "png",
+) -> None:
+    """Generate a process map from ``input_file`` in the desired format."""
     try:
         steps = _read_steps(input_file)
     except Exception as exc:  # pragma: no cover - runtime validation
@@ -67,16 +89,22 @@ def draw_process_graph(input_file: str, output_path: str = "process_map.png") ->
         return
 
     try:
-        _build_graph(steps, output_path)
+        if fmt == "html":
+            if output_path.endswith(".png"):
+                output_path = os.path.splitext(output_path)[0] + ".html"
+            _build_html_graph(steps, output_path)
+        else:
+            _build_graph(steps, output_path)
+            output_path = os.path.splitext(output_path)[0] + ".png"
     except Exception as exc:  # pragma: no cover - runtime validation
         print(f"Failed to render process map: {exc}")
         return
 
-    out = os.path.splitext(output_path)[0] + ".png"
-    print(f"Process map saved to {out}")
+    print(f"Process map saved to {output_path}")
 
 
-if __name__ == "__main__":
+def main() -> None:
+    """CLI entry point for the process map generator."""
     parser = argparse.ArgumentParser(
         description="Generate a visual process map from a JSON step file."
     )
@@ -90,7 +118,17 @@ if __name__ == "__main__":
         "output_file",
         nargs="?",
         default="process_map.png",
-        help="Output image file path.",
+        help="Output file path (PNG or HTML).",
+    )
+    parser.add_argument(
+        "--format",
+        choices=["png", "html"],
+        default="png",
+        help="Output format: png (default) or html for an interactive map.",
     )
     args = parser.parse_args()
-    draw_process_graph(args.input_file, args.output_file)
+    draw_process_graph(args.input_file, args.output_file, args.format)
+
+
+if __name__ == "__main__":  # pragma: no cover - CLI entry
+    main()

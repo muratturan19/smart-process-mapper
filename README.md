@@ -43,3 +43,11 @@ draw-process-map cleaned_steps.json
 ```
 
 The script reads the JSON file and outputs ``process_map.png`` in the current directory. The ``graphviz`` Python package and Graphviz binaries are required for PNG generation.
+
+To create an interactive HTML version instead, pass ``--format html`` and open the resulting file in your browser:
+
+```bash
+draw-process-map cleaned_steps.json process_map.html --format html
+```
+
+See the generated [process_map.html](process_map.html) for an example.
