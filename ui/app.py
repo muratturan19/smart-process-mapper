@@ -6,6 +6,8 @@ import streamlit as st
 from semantic_step_extractor import extract_steps
 from pyvis.network import Network
 import tempfile
+import matplotlib.pyplot as plt
+from matplotlib import patches
 
 st.set_page_config(page_title="Smart Process Mapper")
 
@@ -48,5 +50,32 @@ if text:
         with tempfile.NamedTemporaryFile(delete=False, suffix=".html") as tmp_file:
             net.save_graph(tmp_file.name)
             html_content = open(tmp_file.name, "r", encoding="utf-8").read()
+
+        output_dir = Path(__file__).resolve().parents[1] / "outputs"
+        output_dir.mkdir(exist_ok=True)
+        net.save_graph(output_dir / "process_map_interactive.html")
+
         st.components.v1.html(html_content, height=500, scrolling=True)
+
+        if st.button("Klasik Süreç Akışını Göster"):
+            fig_height = max(2, 1.5 * len(steps))
+            fig, ax = plt.subplots(figsize=(6, fig_height))
+            ax.axis("off")
+            for idx, step in enumerate(steps):
+                y = -idx * 2.5
+                box = patches.FancyBboxPatch(
+                    (0.5, y), 5, 1.5, boxstyle="round,pad=0.3", facecolor="lightgray"
+                )
+                ax.add_patch(box)
+                ax.text(3, y + 0.75, f"{idx + 1}. {step}", ha="center", va="center")
+                if idx < len(steps) - 1:
+                    ax.annotate(
+                        "",
+                        xy=(3, y - 0.05),
+                        xytext=(3, y - 1.0),
+                        arrowprops=dict(arrowstyle="->"),
+                    )
+            ax.set_xlim(0, 6)
+            ax.set_ylim(-2.5 * len(steps), 1.5)
+            st.pyplot(fig)
 
