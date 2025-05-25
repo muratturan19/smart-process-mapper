@@ -16,7 +16,7 @@ call "%VENV_DIR%\Scripts\activate.bat"
 
 rem Install Python dependencies and Turkish spaCy model
 pip install -r "%BASE_DIR%requirements.txt"
-pip install https://huggingface.co/turkish-nlp-suite/tr_core_news_md/resolve/main/tr_core_news_md-any-py3-none-any.whl
+pip install https://huggingface.co/turkish-nlp-suite/tr_core_news_md/resolve/main/tr_core_news_md-1.0-py3-none-any.whl
 pip install "%BASE_DIR%"
 python -m spacy link tr_core_news_md tr_core_news_md >nul 2>nul
 
