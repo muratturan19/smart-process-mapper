@@ -4,8 +4,6 @@ import logging
 import os
 import re
 import spacy
-import subprocess
-import sys
 import warnings
 from typing import Optional
 
@@ -15,42 +13,25 @@ try:
         AutoModelForCausalLM,
         pipeline,
     )
-except Exception:  # pragma: no cover - transformers is optional
+except Exception as exc:  # pragma: no cover - transformers is optional
     AutoTokenizer = None
     AutoModelForCausalLM = None
     pipeline = None
-    try:  # attempt silent install if missing
-        subprocess.check_call(
-            [sys.executable, "-m", "pip", "install", "transformers", "huggingface_hub"],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
-        from transformers import (
-            AutoTokenizer,
-            AutoModelForCausalLM,
-            pipeline,
-        )
-    except Exception as exc:  # pragma: no cover - installation failed
-        logging.warning("Could not import transformers: %s", exc)
-        AutoTokenizer = None
-        AutoModelForCausalLM = None
-        pipeline = None
+    logging.warning(
+        "transformers not available (%s). Install 'transformers' and "
+        "'huggingface_hub' with pip to enable LLM features.",
+        exc,
+    )
 
 try:
     from huggingface_hub import snapshot_download
-except Exception:
+except Exception as exc:
     snapshot_download = None
-    if AutoTokenizer:  # install only if transformers succeeded
-        try:
-            subprocess.check_call(
-                [sys.executable, "-m", "pip", "install", "huggingface_hub"],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            from huggingface_hub import snapshot_download
-        except Exception as exc:  # pragma: no cover - installation failed
-            logging.warning("Could not import huggingface_hub: %s", exc)
-            snapshot_download = None
+    logging.warning(
+        "huggingface_hub not available (%s). Install it with pip to enable "
+        "LLM features.",
+        exc,
+    )
 
 try:
     nlp = spacy.load("tr_core_news_md")

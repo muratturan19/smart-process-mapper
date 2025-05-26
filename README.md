@@ -16,8 +16,9 @@ pip install .
 Both `setup.sh` and the Windows launcher `start_ui.bat` fetch the model using
 the same URL, so manual installation is optional on those platforms.
 
-To leverage the optional Kocdigital language model, download the weights using
-`huggingface-cli` and ensure `transformers` is installed from the requirements.
+To leverage the optional Kocdigital language model, install the
+`transformers` and `huggingface_hub` packages from the requirements and download
+the weights using `huggingface-cli`.
 The Windows launcher caches these weights under `hf_cache` next to the script
 by setting the `HF_HOME` environment variable before invoking `huggingface-cli`.
 Alternatively, supply the `--hf-home` option when running `smart-step-extract`
@@ -89,8 +90,9 @@ This command creates ``parsed_steps.json`` in the current directory.
 
 ### Using the Kocdigital LLM
 
-If the optional [KOCDIGITAL/Kocdigital-LLM-8b-v0.1](https://huggingface.co/KOCDIGITAL/Kocdigital-LLM-8b-v0.1) model is installed,
-steps can be extracted with the LLM instead of spaCy:
+If the optional [KOCDIGITAL/Kocdigital-LLM-8b-v0.1](https://huggingface.co/KOCDIGITAL/Kocdigital-LLM-8b-v0.1) model is installed and
+both `transformers` and `huggingface_hub` are available, steps can be extracted
+with the LLM instead of spaCy:
 
 ```bash
 smart-step-extract example_input.txt cleaned_steps.json --llm

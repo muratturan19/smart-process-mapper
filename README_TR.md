@@ -15,7 +15,7 @@ pip install .
 
 Hem `setup.sh` hem de Windows için `start_ui.bat` betiği modeli aynı URL'den indirir, bu nedenle bu platformlarda manuel kurulum isteğe bağlıdır.
 
-İsteğe bağlı Kocdigital dil modelinden yararlanmak için ağırlıkları `huggingface-cli` kullanarak indirin ve `requirements.txt` içerisindeki `transformers` paketinin kurulu olduğundan emin olun.
+İsteğe bağlı Kocdigital dil modelinden yararlanmak için `requirements.txt`'teki `transformers` ve `huggingface_hub` paketlerini kurup ağırlıkları `huggingface-cli` ile indirin.
 Windows başlangıç betiği bu ağırlıkları `HF_HOME` ortam değişkenini ayarlayarak scriptin yanındaki `hf_cache` klasörüne kaydeder.
 Alternatif olarak `smart-step-extract` komutunu çalıştırırken `--hf-home` seçeneği ile özel bir önbellek dizini belirtebilirsiniz.
 
@@ -70,7 +70,7 @@ Bu komut bulunduğunuz dizinde ``parsed_steps.json`` dosyasını oluşturur.
 
 ### Kocdigital LLM kullanımı
 
-İsteğe bağlı [KOCDIGITAL/Kocdigital-LLM-8b-v0.1](https://huggingface.co/KOCDIGITAL/Kocdigital-LLM-8b-v0.1) modeli kuruluysa, adımlar LLM ile spaCy yerine çıkarılabilir:
+İsteğe bağlı [KOCDIGITAL/Kocdigital-LLM-8b-v0.1](https://huggingface.co/KOCDIGITAL/Kocdigital-LLM-8b-v0.1) modeli kurulu ve `transformers` ile `huggingface_hub` paketleri yüklüyse, adımlar LLM ile spaCy yerine çıkarılabilir:
 ```bash
 smart-step-extract example_input.txt cleaned_steps.json --llm
 ```
