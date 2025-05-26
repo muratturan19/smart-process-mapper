@@ -6,6 +6,7 @@ matplotlib
 pyvis
 graphviz>=0.20.1
 transformers>=4.30.0
+huggingface-hub>=0.16.0
 
 # After installing these packages, install the Turkish NLP model from
 # Hugging Face with:
