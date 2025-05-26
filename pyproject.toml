@@ -32,4 +32,7 @@ py-modules = [
     "semantic_step_extractor",
     "draw_process_map",
 ]
-packages = []
+
+[tool.setuptools.packages.find]
+include = ["lib", "ui"]
+exclude = ["outputs"]
