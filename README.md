@@ -40,6 +40,12 @@ $env:HF_HOME="C:\hf_cache"
 export HF_HOME=/path/to/hf_cache
 ```
 
+Always point `HF_HOME` to the **top-level** cache directory. Do not set it to a
+subfolder like `hub` or `snapshots`. `start_ui.bat` appends
+`hub\models--KOCDIGITAL--Kocdigital-LLM-8b-v0.1` when verifying that the model
+weights are present, so pointing `HF_HOME` to one of those subdirectories will
+cause the check to fail.
+
 The provided batch script uses the existing `HF_HOME` value when present,
 otherwise it defaults to a local `hf_cache` directory.
 `TRANSFORMERS_CACHE` is also set to the same location so the Transformers
