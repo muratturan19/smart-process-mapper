@@ -82,19 +82,6 @@ if not defined SKIP_VENV_CREATION (
     )
 
 
-    echo Checking for Kocdigital LLM weights...
-    if not exist "%HF_HOME%\hub\models--KOCDIGITAL--Kocdigital-LLM-8b-v0.1" (
-        echo Downloading Kocdigital LLM weights...
-        "%VENV_DIR%\Scripts\huggingface-cli.exe" download KOCDIGITAL/Kocdigital-LLM-8b-v0.1 >> "%BASE_DIR%install.log" 2>&1
-        if %ERRORLEVEL% neq 0 (
-            echo LLM weight download failed (%ERRORLEVEL%)
-            goto install_fail
-        ) else (
-            echo LLM weights downloaded.
-        )
-    ) else (
-        echo Kocdigital LLM weights already downloaded.
-    )
 
     echo Recording installed packages...
     pip list > "%BASE_DIR%installed_packages.log"
@@ -127,6 +114,13 @@ if %ERRORLEVEL% neq 0 (
     echo Environment activated.
 )
 
+rem Download the Kocdigital LLM weights if missing
+python "%BASE_DIR%download_model.py" >> "%BASE_DIR%install.log" 2>&1
+if %ERRORLEVEL% neq 0 (
+    echo LLM weight download failed (%ERRORLEVEL%)
+    goto install_fail
+)
+
 echo Verifying Python dependencies...
 pip install --upgrade -r "%BASE_DIR%requirements.txt" >> "%BASE_DIR%install.log" 2>&1
 if %ERRORLEVEL% neq 0 goto install_fail
@@ -141,20 +135,6 @@ if %ERRORLEVEL% neq 0 (
     echo spaCy model installed.
 ) else (
     echo Turkish spaCy model already installed.
-)
-
-echo Checking for Kocdigital LLM weights...
-if not exist "%HF_HOME%\hub\models--KOCDIGITAL--Kocdigital-LLM-8b-v0.1" (
-    echo Downloading Kocdigital LLM weights...
-    "%VENV_DIR%\Scripts\huggingface-cli.exe" download KOCDIGITAL/Kocdigital-LLM-8b-v0.1 >> "%BASE_DIR%install.log" 2>&1
-    if %ERRORLEVEL% neq 0 (
-        echo LLM weight download failed (%ERRORLEVEL%)
-        goto install_fail
-    ) else (
-        echo LLM weights downloaded.
-    )
-) else (
-    echo Kocdigital LLM weights already downloaded.
 )
 
 echo Launching Streamlit UI...

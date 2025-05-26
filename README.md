@@ -18,10 +18,11 @@ the same URL, so manual installation is optional on those platforms.
 
 To leverage the optional Kocdigital language model, first install the
 `transformers` and `huggingface_hub` packages and download the weights using
-`huggingface-cli`. These dependencies are **not** installed automatically, so be
-sure they are available before enabling the LLM features.
+`python download_model.py`. These dependencies are **not** installed
+automatically, so be sure they are available before enabling the LLM features.
 The Windows launcher caches these weights under `hf_cache` next to the script
-by setting the `HF_HOME` environment variable before invoking `huggingface-cli`.
+by setting the `HF_HOME` environment variable before invoking the helper
+script.
 Alternatively, supply the `--hf-home` option when running `smart-step-extract`
 to use a custom cache directory.
 
