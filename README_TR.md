@@ -1,116 +1,119 @@
-💡 Proje Hakkında
-Bu Python modülü, serbest biçimli Türkçe süreç açıklamalarını okuyarak sıralı işlem adımlarına dönüştürür.
-Amaç: İnsan tarafından yazılmış operasyon betimlemelerini yapılandırılmış veri haline getirmektir.
+# smart-process-mapper
 
-📂 Girdi
-Kullanıcıdan gelen süreç metni bir .txt dosyasına yazılır.
-Örneğin:
+Bu proje, Türkçe bir metin dosyasından sıralı süreç adımlarını çıkaran basit bir ayrıştırıcı içerir.
+Bu belgenin İngilizce sürümü için [README.md](README.md) dosyasına bakın.
 
-example_input.txt
+## Kurulum
 
-css
-Kopyala
-Düzenle
-İlk olarak hammadde kontrolü yapılır.  
-Daha sonra karıştırma işlemine geçilir.  
-Dolum başlar.  
-Etiketleme ve paketleme yapılır.  
-En son kalite kontrol yapılır.
-🧠 Ne Yapar?
-Süreç cümlelerini analiz eder
-
-Anahtar kelimeleri tarar (örn: “karıştır”, “dolum”, “etiket” vb.)
-
-“önce”, “en son” gibi ifadelerle sıralama kurar
-
-Sonuçta her adımı numaralandırır
-
-▶️ Nasıl Kullanılır?
-Terminalden çalıştır:
-
-bash
-Kopyala
-Düzenle
-python process_parser.py
-Eğer example_input.txt dosyası klasörde varsa, sonucu terminale yazar:
-
-python
-Kopyala
-Düzenle
-[
-  {'step': 'İlk olarak hammadde kontrolü yapılır.', 'order': 1},
-  {'step': 'Daha sonra karıştırma işlemine geçilir.', 'order': 2},
-  ...
-]
-🔧 Gereksinimler
-txt
-Kopyala
-Düzenle
-Python 3.10
-Gerekli kütüphaneler: spaCy 3.4.2, numpy 1.23.5 ve thinc 8.1.10.
-
-Streamlit ve diğer bağımlılıkları yüklemek için `pip install -r requirements.txt` komutunu çalıştırın.
-
-🧱 Dosya Yapısı
-bash
-Kopyala
-Düzenle
-project/
-├── process_parser.py         ← Ana modül
-├── example_input.txt         ← Süreç metni girdisi
-└── README.md                 ← Bu belge
-❓Metni Python’a Nasıl Vereceksin?
-🔹 1. Yöntem: Metni .txt dosyasına yaz
-Klasörde bir dosya oluştur:
-
-📄 example_input.txt
-
-İçine şunu yaz:
-
-css
-Kopyala
-Düzenle
-İlk olarak hammadde kontrolü yapılır.  
-Daha sonra karıştırma işlemine geçilir.  
-Dolum başlar.  
-Etiketleme ve paketleme yapılır.  
-En son kalite kontrol yapılır.
-Sonra process_parser.py dosyasını çalıştır.
-Kod zaten bu dosyayı okuyacak şekilde ayarlandı:
-
-python
-Kopyala
-Düzenle
-parsed = parse_process("example_input.txt")
-
-### LLM Kullanımı
-
-İsteğe bağlı olarak [KOCDIGITAL/Kocdigital-LLM-8b-v0.1](https://huggingface.co/KOCDIGITAL/Kocdigital-LLM-8b-v0.1) modelini indirirseniz,
-Windows başlangıç betiği indirilen ağırlıkları `HF_HOME` değişkeni ile script dizinine oluşturulan `hf_cache` klasörüne kaydeder,
-adım çıkarma işlemini LLM ile gerçekleştirmek için şu komutu çalıştırabilirsiniz:
-
-`smart-step-extract` komutunda `--hf-home` parametresi ile önbellek klasörünü
-belirtebilirsiniz.
-
+Bu proje yalnızca **Python 3.10** ile test edilmiştir.
+Test edilen sürümler spaCy 3.4.2, numpy 1.23.5 ve thinc 8.1.10'dur. Paketi yüklemeden önce Hugging Face'ten Türkçe NLP modelini kurun:
 ```bash
-python semantic_step_extractor.py example_input.txt cleaned_steps.json --llm
+pip install https://huggingface.co/turkish-nlp-suite/tr_core_news_md/resolve/main/tr_core_news_md-1.0-py3-none-any.whl
+pip install -r requirements.txt
+pip install .
 ```
 
-`--llm` parametresi verilmezse spaCy tabanlı çıkarıcı kullanılır.
+Hem `setup.sh` hem de Windows için `start_ui.bat` betiği modeli aynı URL'den indirir, bu nedenle bu platformlarda manuel kurulum isteğe bağlıdır.
 
-### HF_HOME Değişkeni
+İsteğe bağlı Kocdigital dil modelinden yararlanmak için ağırlıkları `huggingface-cli` kullanarak indirin ve `requirements.txt` içerisindeki `transformers` paketinin kurulu olduğundan emin olun.
+Windows başlangıç betiği bu ağırlıkları `HF_HOME` ortam değişkenini ayarlayarak scriptin yanındaki `hf_cache` klasörüne kaydeder.
+Alternatif olarak `smart-step-extract` komutunu çalıştırırken `--hf-home` seçeneği ile özel bir önbellek dizini belirtebilirsiniz.
 
-Hugging Face modellerinin nereye indirileceğini `HF_HOME` ortam değişkeni ile
-belirleyebilirsiniz. Komut satırındaki araçları veya `start_ui.bat` dosyasını
-çalıştırmadan önce değişkeni şu şekilde ayarlayın:
+### `HF_HOME` Ayarlama
 
+Hugging Face modelleri `HF_HOME` altında önbelleğe alınır. Komut satırı araçlarını veya `start_ui.bat` dosyasını çalıştırmadan önce özel bir önbellek konumu istiyorsanız bu değişkeni tanımlayın:
 ```bash
-# Windows
+# Windows CMD
 set HF_HOME=C:\hf_cache
 
-# Linux/macOS
+# PowerShell
+$env:HF_HOME="C:\hf_cache"
+
+# Unix shells
 export HF_HOME=/path/to/hf_cache
 ```
 
-Batch scripti tanımlı bir `HF_HOME` varsa onu kullanır, aksi halde kendi
-klasöründe `hf_cache` oluşturur.
+Sağlanan batch betiği var olan `HF_HOME` değerini kullanır, aksi takdirde yerel bir `hf_cache` dizinine varsayılan olarak indirir.
+
+CLI araçlarını veya Streamlit arayüzünü çalıştırmadan önce `pip install -r requirements.txt` komutunu çalıştırarak tüm bağımlılıkların yüklü olduğundan emin olun.
+
+### Zip arşivi oluşturma
+
+Çevrimdışı bir paket gerekiyorsa, tüm bağımlılıkları ve Hugging Face üzerinden Türkçe spaCy modelini paketlemek için yardımcı betiği çalıştırın:
+```bash
+bash scripts/build_zip.sh
+```
+
+Bu işlem proje dosyalarını ve kurulu kütüphaneleri içeren `dist/smart-process-mapper.zip` dosyasını oluşturur.
+
+### İndirme ve açma
+
+Zip dosyasını sürümler sayfasından indirin veya yukarıdaki gibi kendiniz oluşturun. Ardından arşivi açıp `package` dizininden araçları çalıştırın:
+```bash
+unzip smart-process-mapper.zip
+cd package
+python process_parser.py example_input.txt parsed_steps.json
+```
+
+## Ayrıştırıcıyı çalıştırmak
+
+Bir metin dosyasından sıralı adımları çıkarmak için:
+```bash
+smart-process-parse example_input.txt parsed_steps.json
+```
+
+Bu komut bulunduğunuz dizinde ``parsed_steps.json`` dosyasını oluşturur.
+
+### Kocdigital LLM kullanımı
+
+İsteğe bağlı [KOCDIGITAL/Kocdigital-LLM-8b-v0.1](https://huggingface.co/KOCDIGITAL/Kocdigital-LLM-8b-v0.1) modeli kuruluysa, adımlar LLM ile spaCy yerine çıkarılabilir:
+```bash
+smart-step-extract example_input.txt cleaned_steps.json --llm
+```
+
+``--llm`` parametresi verilmezse spaCy tabanlı çıkarıcı kullanılır.
+
+``parsed_steps.json`` dosyasının örnek içeriği:
+```json
+[
+  {"step": "Üretim süreci aşağıdaki gibidir: Önce malzemeler karıştırma bölümünde iyice karıştırılır", "order": 1},
+  {"step": "Daha sonra karışım dolum makinesine aktarılır ve şişelere doldurulur", "order": 2},
+  {"step": "Sonra şişeler etiketleme hattına yönlendirilir", "order": 3},
+  {"step": "En son ürünler paketlenerek sevkiyata hazır hale getirilir", "order": 4}
+]
+```
+
+## Süreç haritası oluşturma
+
+``smart-step-extract`` ile ``cleaned_steps.json`` elde edildikten sonra ``draw-process-map`` komutuyla görsel bir süreç haritası üretebilirsiniz:
+```bash
+smart-step-extract example_input.txt cleaned_steps.json
+draw-process-map cleaned_steps.json
+```
+
+Betik JSON dosyasını okuyarak bulunduğunuz dizinde ``process_map.png`` oluşturur. PNG üretimi için ``graphviz`` Python paketi ve Graphviz araçları gereklidir.
+
+Etkileşimli bir HTML sürümü oluşturmak için ``--format html`` parametresini kullanın ve oluşan dosyayı tarayıcıda açın:
+```bash
+draw-process-map cleaned_steps.json process_map.html --format html
+```
+
+Örnek için oluşturulan [process_map.html](process_map.html) dosyasına bakabilirsiniz.
+
+## Streamlit UI'yi çalıştırmak
+
+Etkileşimli bir web arayüzü dahildir. Proje kök dizininden veya `ui` klasörü içinden başlatabilirsiniz:
+```bash
+streamlit run ui/app.py       # proje kökünden çalıştır
+# veya
+cd ui
+streamlit run app.py          # ui klasöründe çalıştır
+```
+
+Windows sistemlerde yalnızca `start_ui.bat` dosyasına çift tıklayarak web arayüzünü başlatabilirsiniz. Betik ilk çalıştırmada yerel bir sanal ortam oluşturur ve gerekli paketleri kurar. Unix kullanıcıları `./start_ui.sh` varsa onu çalıştırabilir ve bağımlılıkları kendileri kurabilir.
+
+## Atıf
+
+`tr_core_news_md` modelini kullanıyorsanız lütfen şu çalışmayı kaynak gösterin:
+
+Altınok, 2023.
