@@ -15,6 +15,8 @@ pip install .
 
 To leverage the optional Kocdigital language model, download the weights using
 `huggingface-cli` and ensure `transformers` is installed from the requirements.
+The Windows launcher caches these weights under `hf_cache` next to the script
+by setting the `HF_HOME` environment variable before invoking `huggingface-cli`.
 
 Run `pip install -r requirements.txt` before executing the CLI tools or launching the Streamlit UI to ensure all dependencies are available.
 

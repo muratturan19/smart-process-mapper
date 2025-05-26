@@ -86,6 +86,7 @@ parsed = parse_process("example_input.txt")
 ### LLM Kullanımı
 
 İsteğe bağlı olarak [KOCDIGITAL/Kocdigital-LLM-8b-v0.1](https://huggingface.co/KOCDIGITAL/Kocdigital-LLM-8b-v0.1) modelini indirirseniz,
+Windows başlangıç betiği indirilen ağırlıkları `HF_HOME` değişkeni ile script dizinine oluşturulan `hf_cache` klasörüne kaydeder,
 adım çıkarma işlemini LLM ile gerçekleştirmek için şu komutu çalıştırabilirsiniz:
 
 ```bash
