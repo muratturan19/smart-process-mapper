@@ -81,14 +81,6 @@ if not defined SKIP_VENV_CREATION (
         echo Local package installed.
     )
 
-    echo Linking spaCy model...
-    python -m spacy link tr_core_news_md tr_core_news_md >> "%BASE_DIR%install.log" 2>&1
-    if %ERRORLEVEL% neq 0 (
-        echo spaCy model link failed (%ERRORLEVEL%)
-        goto install_fail
-    ) else (
-        echo spaCy model linked.
-    )
 
     echo Checking for Kocdigital LLM weights...
     if not exist "%HF_HOME%\hub\models--KOCDIGITAL--Kocdigital-LLM-8b-v0.1" (
