@@ -13,6 +13,9 @@ pip install -r requirements.txt
 pip install .
 ```
 
+To leverage the optional Kocdigital language model, download the weights using
+`huggingface-cli` and ensure `transformers` is installed from the requirements.
+
 Run `pip install -r requirements.txt` before executing the CLI tools or launching the Streamlit UI to ensure all dependencies are available.
 
 
@@ -48,6 +51,17 @@ smart-process-parse example_input.txt parsed_steps.json
 ```
 
 This command creates ``parsed_steps.json`` in the current directory.
+
+### Using the Kocdigital LLM
+
+If the optional [KOCDIGITAL/Kocdigital-LLM-8b-v0.1](https://huggingface.co/KOCDIGITAL/Kocdigital-LLM-8b-v0.1) model is installed,
+steps can be extracted with the LLM instead of spaCy:
+
+```bash
+smart-step-extract example_input.txt cleaned_steps.json --llm
+```
+
+Without the ``--llm`` flag the spaCy based extractor is used.
 
 Example content of ``parsed_steps.json``:
 
