@@ -17,14 +17,15 @@ Both `setup.sh` and the Windows launcher `start_ui.bat` fetch the model using
 the same URL, so manual installation is optional on those platforms.
 
 To leverage the optional Kocdigital language model, first install the
-`transformers` and `huggingface_hub` packages and download the weights using
+`transformers` and `huggingface_hub` packages and download the weights with
 `python download_model.py`. These dependencies are **not** installed
 automatically, so be sure they are available before enabling the LLM features.
-The Windows launcher caches these weights under `hf_cache` next to the script
-by setting the `HF_HOME` environment variable before invoking the helper
-script.
-Alternatively, supply the `--hf-home` option when running `smart-step-extract`
-to use a custom cache directory.
+The Windows launcher runs this helper automatically when you execute
+`start_ui.bat`, storing the snapshot under `hf_cache` by setting the
+`HF_HOME` environment variable. If you call the script yourself, define
+`HF_HOME` beforehand to choose a custom location. You can also supply the
+`--hf-home` option when running `smart-step-extract` to use a different cache
+directory.
 
 ### Setting `HF_HOME`
 
