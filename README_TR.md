@@ -33,7 +33,7 @@ $env:HF_HOME="C:\hf_cache"
 export HF_HOME=/path/to/hf_cache
 ```
 
-Sağlanan batch betiği var olan `HF_HOME` değerini kullanır, aksi takdirde yerel bir `hf_cache` dizinine varsayılan olarak indirir.
+Windows batch betiği, scriptin yanındaki yerel `hf_cache` klasöründe Kocdigital LLM dosyaları bulunuyorsa `HF_HOME` ve `TRANSFORMERS_CACHE` değişkenlerini bu klasöre zorla ayarlar. Böylece çevrimdışı çalışırken mevcut `HF_HOME` değeri göz ardı edilir. Ağırlıklar bulunamazsa var olan `HF_HOME` değeri kullanılır (ya da aynı yerel klasör varsayılır).
 
 CLI araçlarını veya Streamlit arayüzünü çalıştırmadan önce `pip install -r requirements.txt` komutunu çalıştırarak tüm bağımlılıkların yüklü olduğundan emin olun.
 

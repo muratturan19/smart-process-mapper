@@ -40,8 +40,11 @@ $env:HF_HOME="C:\hf_cache"
 export HF_HOME=/path/to/hf_cache
 ```
 
-The provided batch script uses the existing `HF_HOME` value when present,
-otherwise it defaults to a local `hf_cache` directory.
+The Windows batch script checks for the Kocdigital LLM weights in a local
+`hf_cache` directory next to the script. If they are found, it forces both
+`HF_HOME` and `TRANSFORMERS_CACHE` to that folder so the tools work offline,
+ignoring any existing `HF_HOME` value. Otherwise it keeps the current
+`HF_HOME` setting (or defaults to the same local directory).
 
 Run `pip install -r requirements.txt` before executing the CLI tools or launching the Streamlit UI to ensure all dependencies are available.
 

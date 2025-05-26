@@ -5,11 +5,21 @@ rem Directory where this script resides
 set BASE_DIR=%~dp0
 set VENV_DIR=%BASE_DIR%venv
 set FLAG_FILE=%VENV_DIR%\installed.flag
-if not defined HF_HOME set HF_HOME=%BASE_DIR%hf_cache
+set LOCAL_CACHE=%BASE_DIR%hf_cache
+
+rem Prefer local cache if the model weights exist there
+if exist "%LOCAL_CACHE%\hub\models--KOCDIGITAL--Kocdigital-LLM-8b-v0.1" (
+    set HF_HOME=%LOCAL_CACHE%
+) else if not defined HF_HOME (
+    set HF_HOME=%LOCAL_CACHE%
+)
+
+if not defined TRANSFORMERS_CACHE set TRANSFORMERS_CACHE=%HF_HOME%
 
 echo BASE_DIR=%BASE_DIR%
 echo VENV_DIR=%VENV_DIR%
 echo HF_HOME=%HF_HOME%
+echo TRANSFORMERS_CACHE=%TRANSFORMERS_CACHE%
 
 rem Skip venv creation if marker exists but still verify dependencies
 echo Checking for installation flag at %FLAG_FILE%...
