@@ -17,20 +17,18 @@ except Exception as exc:  # pragma: no cover - transformers is optional
     AutoTokenizer = None
     AutoModelForCausalLM = None
     pipeline = None
-    logging.warning(
-        "transformers not available (%s). Install 'transformers' and "
-        "'huggingface_hub' with pip to enable LLM features.",
-        exc,
+    warnings.warn(
+        "transformers not available (%s). Install the 'transformers' and "
+        "'huggingface_hub' packages manually to enable LLM features." % exc
     )
 
 try:
     from huggingface_hub import snapshot_download
 except Exception as exc:
     snapshot_download = None
-    logging.warning(
-        "huggingface_hub not available (%s). Install it with pip to enable "
-        "LLM features.",
-        exc,
+    warnings.warn(
+        "huggingface_hub not available (%s). Install the package manually "
+        "to enable LLM features." % exc
     )
 
 try:
