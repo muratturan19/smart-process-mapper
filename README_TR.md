@@ -97,3 +97,20 @@ python semantic_step_extractor.py example_input.txt cleaned_steps.json --llm
 ```
 
 `--llm` parametresi verilmezse spaCy tabanlı çıkarıcı kullanılır.
+
+### HF_HOME Değişkeni
+
+Hugging Face modellerinin nereye indirileceğini `HF_HOME` ortam değişkeni ile
+belirleyebilirsiniz. Komut satırındaki araçları veya `start_ui.bat` dosyasını
+çalıştırmadan önce değişkeni şu şekilde ayarlayın:
+
+```bash
+# Windows
+set HF_HOME=C:\hf_cache
+
+# Linux/macOS
+export HF_HOME=/path/to/hf_cache
+```
+
+Batch scripti tanımlı bir `HF_HOME` varsa onu kullanır, aksi halde kendi
+klasöründe `hf_cache` oluşturur.
