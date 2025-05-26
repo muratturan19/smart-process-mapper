@@ -4,32 +4,46 @@ setlocal
 rem Directory where this script resides
 set BASE_DIR=%~dp0
 set VENV_DIR=%BASE_DIR%venv
+set FLAG_FILE=%VENV_DIR%\installed.flag
 
-rem Create virtual environment on first run
+rem Skip installation if marker exists
+if exist "%FLAG_FILE%" goto run_env
+
+
+rem Create virtual environment and install packages on first run
 if not exist "%VENV_DIR%\Scripts\python.exe" (
     echo Creating virtual environment in %VENV_DIR%
     python -m venv "%VENV_DIR%"
+
+    rem Activate the environment
+    call "%VENV_DIR%\Scripts\activate.bat"
+
+    rem Install Python dependencies and Turkish spaCy model
+    pip install -r "%BASE_DIR%requirements.txt" >> "%BASE_DIR%install.log" 2>&1
+    if %ERRORLEVEL% neq 0 goto install_fail
+    pip install https://huggingface.co/turkish-nlp-suite/tr_core_news_md/resolve/main/tr_core_news_md-1.0-py3-none-any.whl >> "%BASE_DIR%install.log" 2>&1
+    if %ERRORLEVEL% neq 0 goto install_fail
+    rem Append a dot so the path does not end with a bare backslash
+    pip install "%BASE_DIR%." >> "%BASE_DIR%install.log" 2>&1
+    if %ERRORLEVEL% neq 0 goto install_fail
+    python -m spacy link tr_core_news_md tr_core_news_md >> "%BASE_DIR%install.log" 2>&1
+    if %ERRORLEVEL% neq 0 goto install_fail
+
+    rem Download Kocdigital LLM weights if not already cached
+    "%VENV_DIR%\Scripts\huggingface-cli.exe" download KOCDIGITAL/Kocdigital-LLM-8b-v0.1 >> "%BASE_DIR%install.log" 2>&1
+
+    rem Record installed packages
+    pip list > "%BASE_DIR%installed_packages.log"
+
+    rem Create installation marker
+    type nul > "%FLAG_FILE%"
 )
 
+goto run_env
+
+:run_env
 rem Activate the environment
 call "%VENV_DIR%\Scripts\activate.bat"
-
-rem Install Python dependencies and Turkish spaCy model
-pip install -r "%BASE_DIR%requirements.txt" >> "%BASE_DIR%install.log" 2>&1
-if %ERRORLEVEL% neq 0 goto install_fail
-pip install https://huggingface.co/turkish-nlp-suite/tr_core_news_md/resolve/main/tr_core_news_md-1.0-py3-none-any.whl >> "%BASE_DIR%install.log" 2>&1
-if %ERRORLEVEL% neq 0 goto install_fail
-rem Append a dot so the path does not end with a bare backslash
-pip install "%BASE_DIR%." >> "%BASE_DIR%install.log" 2>&1
-if %ERRORLEVEL% neq 0 goto install_fail
-python -m spacy link tr_core_news_md tr_core_news_md >> "%BASE_DIR%install.log" 2>&1
-if %ERRORLEVEL% neq 0 goto install_fail
-
-rem Download Kocdigital LLM weights if not already cached
-"%VENV_DIR%\Scripts\huggingface-cli.exe" download KOCDIGITAL/Kocdigital-LLM-8b-v0.1 >> "%BASE_DIR%install.log" 2>&1
-
-rem Record installed packages
-pip list > "%BASE_DIR%installed_packages.log"
 
 rem Launch the Streamlit UI in a new window
 start "" streamlit run "%BASE_DIR%ui\app.py"
