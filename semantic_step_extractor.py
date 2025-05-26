@@ -203,7 +203,7 @@ def extract_steps(text: str, use_llm: bool = False) -> list[str]:
         return regex_based_extract_steps(text)
     return semantic_extract_steps(text)
 
-def main(
+def run(
     in_file: str = "example_input.txt",
     out_file: str = "cleaned_steps.json",
     use_llm: bool = False,
@@ -224,7 +224,9 @@ def main(
         json.dump(steps, out_f, ensure_ascii=False, indent=2)
     print(f"Cleaned steps saved to {out_file}")
 
-if __name__ == "__main__":
+
+def main() -> None:
+    """CLI entry point for ``smart-step-extract``."""
     parser = argparse.ArgumentParser(
         description="Extract simplified steps from a Turkish process text."
     )
@@ -251,4 +253,7 @@ if __name__ == "__main__":
         help="Directory to use as HF_HOME for cached models",
     )
     args = parser.parse_args()
-    main(args.input_file, args.output_file, args.llm, args.hf_home)
+    run(args.input_file, args.output_file, args.llm, args.hf_home)
+
+if __name__ == "__main__":  # pragma: no cover - CLI entry
+    main()

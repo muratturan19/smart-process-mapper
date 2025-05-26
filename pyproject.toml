@@ -22,7 +22,7 @@ dependencies = [
 ]
 
 [project.scripts]
-smart-process-parse = "process_parser:parse_and_save"
+smart-process-parse = "process_parser:main"
 smart-step-extract = "semantic_step_extractor:main"
 draw-process-map = "draw_process_map:main"
 
