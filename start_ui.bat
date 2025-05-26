@@ -5,6 +5,7 @@ rem Directory where this script resides
 set BASE_DIR=%~dp0
 set VENV_DIR=%BASE_DIR%venv
 set FLAG_FILE=%VENV_DIR%\installed.flag
+set HF_HOME=%BASE_DIR%hf_cache
 
 rem Skip installation if marker exists
 if exist "%FLAG_FILE%" goto run_env
@@ -30,7 +31,9 @@ if not exist "%VENV_DIR%\Scripts\python.exe" (
     if %ERRORLEVEL% neq 0 goto install_fail
 
     rem Download Kocdigital LLM weights if not already cached
-    "%VENV_DIR%\Scripts\huggingface-cli.exe" download KOCDIGITAL/Kocdigital-LLM-8b-v0.1 >> "%BASE_DIR%install.log" 2>&1
+    if not exist "%HF_HOME%\hub\models--KOCDIGITAL--Kocdigital-LLM-8b-v0.1" (
+        "%VENV_DIR%\Scripts\huggingface-cli.exe" download KOCDIGITAL/Kocdigital-LLM-8b-v0.1 >> "%BASE_DIR%install.log" 2>&1
+    )
 
     rem Record installed packages
     pip list > "%BASE_DIR%installed_packages.log"
