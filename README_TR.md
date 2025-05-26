@@ -33,6 +33,8 @@ $env:HF_HOME="C:\hf_cache"
 export HF_HOME=/path/to/hf_cache
 ```
 
+`HF_HOME` her zaman Hugging Face önbellek klasörünün **üst dizinine** işaret etmelidir. `hub` veya `snapshots` gibi alt klasörler kullanılmamalıdır. `start_ui.bat` betiği modeli kontrol ederken `hub\models--KOCDIGITAL--Kocdigital-LLM-8b-v0.1` yolunu eklediği için `HF_HOME`'u bu alt dizinlerden birine yönlendirmek denetimin başarısız olmasına neden olur.
+
 Sağlanan batch betiği var olan `HF_HOME` değerini kullanır, aksi takdirde yerel bir `hf_cache` dizinine varsayılan olarak indirir.
 `TRANSFORMERS_CACHE` değişkeni de aynı konuma ayarlanarak Transformers
 kütüphanesinin önbelleği doğru yerde aramasını sağlar.
