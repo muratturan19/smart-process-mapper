@@ -23,6 +23,26 @@ by setting the `HF_HOME` environment variable before invoking `huggingface-cli`.
 Alternatively, supply the `--hf-home` option when running `smart-step-extract`
 to use a custom cache directory.
 
+### Setting `HF_HOME`
+
+Hugging Face models are cached under `HF_HOME`. Define this variable before
+running the command-line tools or `start_ui.bat` if you want a custom cache
+location:
+
+```bash
+# Windows CMD
+set HF_HOME=C:\hf_cache
+
+# PowerShell
+$env:HF_HOME="C:\hf_cache"
+
+# Unix shells
+export HF_HOME=/path/to/hf_cache
+```
+
+The provided batch script uses the existing `HF_HOME` value when present,
+otherwise it defaults to a local `hf_cache` directory.
+
 Run `pip install -r requirements.txt` before executing the CLI tools or launching the Streamlit UI to ensure all dependencies are available.
 
 
