@@ -11,25 +11,29 @@ echo BASE_DIR=%BASE_DIR%
 echo VENV_DIR=%VENV_DIR%
 echo HF_HOME=%HF_HOME%
 
-rem Skip installation if marker exists
+rem Skip venv creation if marker exists but still verify dependencies
 echo Checking for installation flag at %FLAG_FILE%...
 if exist "%FLAG_FILE%" (
-    echo Installation flag found - skipping setup.
-    goto run_env
+    echo Installation flag found - verifying dependencies.
+    set SKIP_VENV_CREATION=1
 ) else (
     echo No installation flag found. Starting installation.
 )
 
 
 rem Create virtual environment and install packages on first run
-if not exist "%VENV_DIR%\Scripts\python.exe" (
-    echo Creating virtual environment in %VENV_DIR%...
-    python -m venv "%VENV_DIR%"
-    if %ERRORLEVEL% neq 0 (
-        echo Failed to create virtual environment (%ERRORLEVEL%)
-        goto install_fail
+if not defined SKIP_VENV_CREATION (
+    if not exist "%VENV_DIR%\Scripts\python.exe" (
+        echo Creating virtual environment in %VENV_DIR%...
+        python -m venv "%VENV_DIR%"
+        if %ERRORLEVEL% neq 0 (
+            echo Failed to create virtual environment (%ERRORLEVEL%)
+            goto install_fail
+        ) else (
+            echo Virtual environment created.
+        )
     ) else (
-        echo Virtual environment created.
+        echo Virtual environment already exists.
     )
 
     echo Activating the environment...
@@ -121,6 +125,36 @@ if %ERRORLEVEL% neq 0 (
     goto install_fail
 ) else (
     echo Environment activated.
+)
+
+echo Verifying Python dependencies...
+pip install --upgrade -r "%BASE_DIR%requirements.txt" >> "%BASE_DIR%install.log" 2>&1
+if %ERRORLEVEL% neq 0 goto install_fail
+echo Dependencies verified.
+
+echo Checking Turkish spaCy model...
+python -m spacy info tr_core_news_md >nul 2>&1
+if %ERRORLEVEL% neq 0 (
+    echo Installing Turkish spaCy model...
+    pip install https://huggingface.co/turkish-nlp-suite/tr_core_news_md/resolve/main/tr_core_news_md-1.0-py3-none-any.whl >> "%BASE_DIR%install.log" 2>&1
+    if %ERRORLEVEL% neq 0 goto install_fail
+    echo spaCy model installed.
+) else (
+    echo Turkish spaCy model already installed.
+)
+
+echo Checking for Kocdigital LLM weights...
+if not exist "%HF_HOME%\hub\models--KOCDIGITAL--Kocdigital-LLM-8b-v0.1" (
+    echo Downloading Kocdigital LLM weights...
+    "%VENV_DIR%\Scripts\huggingface-cli.exe" download KOCDIGITAL/Kocdigital-LLM-8b-v0.1 >> "%BASE_DIR%install.log" 2>&1
+    if %ERRORLEVEL% neq 0 (
+        echo LLM weight download failed (%ERRORLEVEL%)
+        goto install_fail
+    ) else (
+        echo LLM weights downloaded.
+    )
+) else (
+    echo Kocdigital LLM weights already downloaded.
 )
 
 echo Launching Streamlit UI...
