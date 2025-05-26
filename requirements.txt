@@ -10,4 +10,4 @@ huggingface-hub>=0.16.0
 
 # After installing these packages, install the Turkish NLP model from
 # Hugging Face with:
-#   pip install https://huggingface.co/turkish-nlp-suite/tr_core_news_md/resolve/main/tr_core_news_md-any-py3-none-any.whl
+#   pip install https://huggingface.co/turkish-nlp-suite/tr_core_news_md/resolve/main/tr_core_news_md-1.0-py3-none-any.whl

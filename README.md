@@ -8,10 +8,13 @@ For a Turkish version of this document, see [README_TR.md](README_TR.md).
 This project was tested only with **Python 3.10**.
 The tested versions are spaCy 3.4.2, numpy 1.23.5 and thinc 8.1.10. Install the Turkish NLP model from Hugging Face before installing this package:
 ```bash
-pip install https://huggingface.co/turkish-nlp-suite/tr_core_news_md/resolve/main/tr_core_news_md-any-py3-none-any.whl
+pip install https://huggingface.co/turkish-nlp-suite/tr_core_news_md/resolve/main/tr_core_news_md-1.0-py3-none-any.whl
 pip install -r requirements.txt
 pip install .
 ```
+
+Both `setup.sh` and the Windows launcher `start_ui.bat` fetch the model using
+the same URL, so manual installation is optional on those platforms.
 
 To leverage the optional Kocdigital language model, download the weights using
 `huggingface-cli` and ensure `transformers` is installed from the requirements.
