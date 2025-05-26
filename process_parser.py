@@ -10,7 +10,7 @@ except OSError:
     warnings.warn(
         "spaCy model 'tr_core_news_md' is not installed. "
         "Install it with "
-        "`pip install https://huggingface.co/turkish-nlp-suite/tr_core_news_md/resolve/main/tr_core_news_md-any-py3-none-any.whl` "
+        "`pip install https://huggingface.co/turkish-nlp-suite/tr_core_news_md/resolve/main/tr_core_news_md-1.0-py3-none-any.whl` "
         "and rerun. Falling back to a blank Turkish pipeline."
     )
     nlp = spacy.blank("tr")

@@ -14,7 +14,7 @@ pip install -r "$ROOT_DIR/requirements.txt" --target "$PKG_DIR"
 
 # download Turkish spaCy model
 echo "Adding Turkish spaCy model from Hugging Face"
-pip install https://huggingface.co/turkish-nlp-suite/tr_core_news_md/resolve/main/tr_core_news_md-any-py3-none-any.whl --target "$PKG_DIR"
+pip install https://huggingface.co/turkish-nlp-suite/tr_core_news_md/resolve/main/tr_core_news_md-1.0-py3-none-any.whl --target "$PKG_DIR"
 
 # copy project scripts
 cp "$ROOT_DIR"/*.py "$PKG_DIR"/
