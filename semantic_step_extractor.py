@@ -216,6 +216,7 @@ def run(
     """
     if hf_home:
         os.environ["HF_HOME"] = hf_home
+        os.environ["TRANSFORMERS_CACHE"] = hf_home
 
     with open(in_file, "r", encoding="utf-8") as f:
         text = f.read()
