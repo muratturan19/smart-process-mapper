@@ -82,3 +82,14 @@ python
 Kopyala
 Düzenle
 parsed = parse_process("example_input.txt")
+
+### LLM Kullanımı
+
+İsteğe bağlı olarak [KOCDIGITAL/Kocdigital-LLM-8b-v0.1](https://huggingface.co/KOCDIGITAL/Kocdigital-LLM-8b-v0.1) modelini indirirseniz,
+adım çıkarma işlemini LLM ile gerçekleştirmek için şu komutu çalıştırabilirsiniz:
+
+```bash
+python semantic_step_extractor.py example_input.txt cleaned_steps.json --llm
+```
+
+`--llm` parametresi verilmezse spaCy tabanlı çıkarıcı kullanılır.

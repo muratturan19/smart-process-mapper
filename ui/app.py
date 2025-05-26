@@ -17,6 +17,11 @@ option = st.radio(
     "Choose input method", ["Upload a file", "Use example_input.txt"]
 )
 
+model_option = st.radio(
+    "Choose extraction model",
+    ["spaCy", "Kocdigital-LLM-8b"],
+)
+
 text = ""
 if option == "Upload a file":
     uploaded_file = st.file_uploader(
@@ -30,10 +35,11 @@ else:
         text = f.read()
 
 if text:
-    steps = extract_steps(text)
+    use_llm = model_option == "Kocdigital-LLM-8b"
+    steps = extract_steps(text, use_llm=use_llm)
     if not steps:
         st.warning(
-            "No steps were extracted. Ensure the spaCy model is installed and the text is a valid Turkish process description."
+            "No steps were extracted. Verify the model setup and that the text is a valid Turkish process description."
         )
     st.subheader("Extracted Steps")
     for idx, step in enumerate(steps, 1):

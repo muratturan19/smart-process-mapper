@@ -3,6 +3,18 @@ import json
 import re
 import spacy
 import warnings
+from typing import Optional
+
+try:
+    from transformers import (
+        AutoTokenizer,
+        AutoModelForCausalLM,
+        pipeline,
+    )
+except Exception:  # pragma: no cover - transformers is optional
+    AutoTokenizer = None
+    AutoModelForCausalLM = None
+    pipeline = None
 
 try:
     nlp = spacy.load("tr_core_news_md")
@@ -16,6 +28,16 @@ except OSError:
     nlp = spacy.blank("tr")
     if "sentencizer" not in nlp.pipe_names:
         nlp.add_pipe("sentencizer")
+
+# Optional LLM pipeline
+llm_pipeline: Optional["pipeline"] = None
+if AutoTokenizer and AutoModelForCausalLM and pipeline:
+    try:
+        tokenizer = AutoTokenizer.from_pretrained("KOCDIGITAL/Kocdigital-LLM-8b-v0.1")
+        model = AutoModelForCausalLM.from_pretrained("KOCDIGITAL/Kocdigital-LLM-8b-v0.1")
+        llm_pipeline = pipeline("text-generation", model=model, tokenizer=tokenizer)
+    except Exception:
+        llm_pipeline = None
 
 def regex_based_extract_steps(text: str) -> list[str]:
     """Return a list of ordered steps for numbered instructions."""
@@ -71,18 +93,44 @@ def semantic_extract_steps(text: str) -> list[str]:
 
     return steps
 
-def extract_steps(text: str) -> list[str]:
-    """Extract ordered or semantic steps depending on input format."""
+
+def llm_extract_steps(text: str) -> list[str]:
+    """Use the optional LLM to generate numbered steps from text."""
+    if llm_pipeline is None:
+        raise RuntimeError("LLM pipeline is not available")
+
+    prompt = (
+        "Aşağıdaki metinden işlem adımlarını numaralı liste halinde çıkar:\n\n"
+        f"{text}\n\nAdımlar:"
+    )
+    output = llm_pipeline(prompt, max_new_tokens=256, do_sample=False)[0]["generated_text"]
+    lines = output.splitlines()
+    steps: list[str] = []
+    for line in lines:
+        m = re.match(r"\s*(\d+)[\.)]\s*(.+)", line)
+        if m:
+            steps.append(m.group(2).strip())
+    return steps
+
+def extract_steps(text: str, use_llm: bool = False) -> list[str]:
+    """Extract steps using numbering, spaCy, or an optional LLM."""
+    if use_llm:
+        return llm_extract_steps(text)
+
     numbered_pattern = re.compile(r"^\s*\d+[\.)]", re.MULTILINE)
     if numbered_pattern.search(text):
         return regex_based_extract_steps(text)
     return semantic_extract_steps(text)
 
-def main(in_file: str = "example_input.txt", out_file: str = "cleaned_steps.json") -> None:
+def main(
+    in_file: str = "example_input.txt",
+    out_file: str = "cleaned_steps.json",
+    use_llm: bool = False,
+) -> None:
     """Read the input file, extract steps and save them as JSON."""
     with open(in_file, "r", encoding="utf-8") as f:
         text = f.read()
-    steps = extract_steps(text)
+    steps = extract_steps(text, use_llm=use_llm)
     with open(out_file, "w", encoding="utf-8") as out_f:
         json.dump(steps, out_f, ensure_ascii=False, indent=2)
     print(f"Cleaned steps saved to {out_file}")
@@ -103,5 +151,10 @@ if __name__ == "__main__":
         default="cleaned_steps.json",
         help="Destination JSON file for the extracted steps.",
     )
+    parser.add_argument(
+        "--llm",
+        action="store_true",
+        help="Use the Kocdigital LLM instead of spaCy",
+    )
     args = parser.parse_args()
-    main(args.input_file, args.output_file)
+    main(args.input_file, args.output_file, args.llm)
