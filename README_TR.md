@@ -15,7 +15,7 @@ pip install .
 
 Hem `setup.sh` hem de Windows için `start_ui.bat` betiği modeli aynı URL'den indirir, bu nedenle bu platformlarda manuel kurulum isteğe bağlıdır.
 
-İsteğe bağlı Kocdigital dil modelinden yararlanmak için `requirements.txt`'teki `transformers` ve `huggingface_hub` paketlerini kurup ağırlıkları `huggingface-cli` ile indirin.
+İsteğe bağlı Kocdigital dil modelinden yararlanmak için önce `transformers` ve `huggingface_hub` paketlerini kurup ağırlıkları `huggingface-cli` ile indirin. Bu bağımlılıklar otomatik olarak kurulmaz, LLM özelliğini etkinleştirmeden önce mevcut olduklarından emin olun.
 Windows başlangıç betiği bu ağırlıkları `HF_HOME` ortam değişkenini ayarlayarak scriptin yanındaki `hf_cache` klasörüne kaydeder.
 Alternatif olarak `smart-step-extract` komutunu çalıştırırken `--hf-home` seçeneği ile özel bir önbellek dizini belirtebilirsiniz.
 
