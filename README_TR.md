@@ -89,6 +89,9 @@ parsed = parse_process("example_input.txt")
 Windows başlangıç betiği indirilen ağırlıkları `HF_HOME` değişkeni ile script dizinine oluşturulan `hf_cache` klasörüne kaydeder,
 adım çıkarma işlemini LLM ile gerçekleştirmek için şu komutu çalıştırabilirsiniz:
 
+`smart-step-extract` komutunda `--hf-home` parametresi ile önbellek klasörünü
+belirtebilirsiniz.
+
 ```bash
 python semantic_step_extractor.py example_input.txt cleaned_steps.json --llm
 ```

@@ -1,6 +1,7 @@
 import argparse
 import json
 import logging
+import os
 import re
 import spacy
 import subprocess
@@ -69,7 +70,11 @@ llm_pipeline: Optional["pipeline"] = None
 
 
 def ensure_llm_pipeline() -> Optional["pipeline"]:
-    """Initialize the Kocdigital LLM pipeline if possible."""
+    """Initialize the Kocdigital LLM pipeline if possible.
+
+    If the ``HF_HOME`` environment variable is set, ``snapshot_download`` will
+    operate in ``local_files_only`` mode to avoid network access.
+    """
     global llm_pipeline
     if llm_pipeline is not None:
         return llm_pipeline
@@ -84,9 +89,10 @@ def ensure_llm_pipeline() -> Optional["pipeline"]:
 
     model_id = "KOCDIGITAL/Kocdigital-LLM-8b-v0.1"
     try:
+        local_only = bool(os.environ.get("HF_HOME"))
         model_dir = snapshot_download(
             repo_id=model_id,
-            local_files_only=False,
+            local_files_only=local_only,
             resume_download=True,
             quiet=True,
         )
@@ -201,8 +207,16 @@ def main(
     in_file: str = "example_input.txt",
     out_file: str = "cleaned_steps.json",
     use_llm: bool = False,
+    hf_home: Optional[str] = None,
 ) -> None:
-    """Read the input file, extract steps and save them as JSON."""
+    """Read the input file, extract steps and save them as JSON.
+
+    If ``hf_home`` is provided via CLI or environment, it is assigned to the
+    ``HF_HOME`` variable before loading the optional LLM.
+    """
+    if hf_home:
+        os.environ["HF_HOME"] = hf_home
+
     with open(in_file, "r", encoding="utf-8") as f:
         text = f.read()
     steps = extract_steps(text, use_llm=use_llm)
@@ -231,5 +245,10 @@ if __name__ == "__main__":
         action="store_true",
         help="Use the Kocdigital LLM instead of spaCy",
     )
+    parser.add_argument(
+        "--hf-home",
+        metavar="PATH",
+        help="Directory to use as HF_HOME for cached models",
+    )
     args = parser.parse_args()
-    main(args.input_file, args.output_file, args.llm)
+    main(args.input_file, args.output_file, args.llm, args.hf_home)
