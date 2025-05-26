@@ -42,6 +42,8 @@ export HF_HOME=/path/to/hf_cache
 
 The provided batch script uses the existing `HF_HOME` value when present,
 otherwise it defaults to a local `hf_cache` directory.
+`TRANSFORMERS_CACHE` is also set to the same location so the Transformers
+library can find the cached weights.
 
 Run `pip install -r requirements.txt` before executing the CLI tools or launching the Streamlit UI to ensure all dependencies are available.
 

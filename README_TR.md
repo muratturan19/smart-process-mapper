@@ -34,6 +34,8 @@ export HF_HOME=/path/to/hf_cache
 ```
 
 Sağlanan batch betiği var olan `HF_HOME` değerini kullanır, aksi takdirde yerel bir `hf_cache` dizinine varsayılan olarak indirir.
+`TRANSFORMERS_CACHE` değişkeni de aynı konuma ayarlanarak Transformers
+kütüphanesinin önbelleği doğru yerde aramasını sağlar.
 
 CLI araçlarını veya Streamlit arayüzünü çalıştırmadan önce `pip install -r requirements.txt` komutunu çalıştırarak tüm bağımlılıkların yüklü olduğundan emin olun.
 
