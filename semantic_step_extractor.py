@@ -1,7 +1,10 @@
 import argparse
 import json
+import logging
 import re
 import spacy
+import subprocess
+import sys
 import warnings
 from typing import Optional
 
@@ -15,6 +18,38 @@ except Exception:  # pragma: no cover - transformers is optional
     AutoTokenizer = None
     AutoModelForCausalLM = None
     pipeline = None
+    try:  # attempt silent install if missing
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", "transformers", "huggingface_hub"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        from transformers import (
+            AutoTokenizer,
+            AutoModelForCausalLM,
+            pipeline,
+        )
+    except Exception as exc:  # pragma: no cover - installation failed
+        logging.warning("Could not import transformers: %s", exc)
+        AutoTokenizer = None
+        AutoModelForCausalLM = None
+        pipeline = None
+
+try:
+    from huggingface_hub import snapshot_download
+except Exception:
+    snapshot_download = None
+    if AutoTokenizer:  # install only if transformers succeeded
+        try:
+            subprocess.check_call(
+                [sys.executable, "-m", "pip", "install", "huggingface_hub"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            from huggingface_hub import snapshot_download
+        except Exception as exc:  # pragma: no cover - installation failed
+            logging.warning("Could not import huggingface_hub: %s", exc)
+            snapshot_download = None
 
 try:
     nlp = spacy.load("tr_core_news_md")
@@ -31,13 +66,37 @@ except OSError:
 
 # Optional LLM pipeline
 llm_pipeline: Optional["pipeline"] = None
-if AutoTokenizer and AutoModelForCausalLM and pipeline:
+
+
+def ensure_llm_pipeline() -> Optional["pipeline"]:
+    """Initialize the Kocdigital LLM pipeline if possible."""
+    global llm_pipeline
+    if llm_pipeline is not None:
+        return llm_pipeline
+
+    if not (AutoTokenizer and AutoModelForCausalLM and pipeline):
+        logging.warning("transformers library is not available; LLM disabled")
+        return None
+
+    if snapshot_download is None:
+        logging.warning("huggingface_hub is not available; LLM disabled")
+        return None
+
+    model_id = "KOCDIGITAL/Kocdigital-LLM-8b-v0.1"
     try:
-        tokenizer = AutoTokenizer.from_pretrained("KOCDIGITAL/Kocdigital-LLM-8b-v0.1")
-        model = AutoModelForCausalLM.from_pretrained("KOCDIGITAL/Kocdigital-LLM-8b-v0.1")
+        model_dir = snapshot_download(
+            repo_id=model_id,
+            local_files_only=False,
+            resume_download=True,
+            quiet=True,
+        )
+        tokenizer = AutoTokenizer.from_pretrained(model_dir, local_files_only=True)
+        model = AutoModelForCausalLM.from_pretrained(model_dir, local_files_only=True)
         llm_pipeline = pipeline("text-generation", model=model, tokenizer=tokenizer)
-    except Exception:
+    except Exception as exc:  # pragma: no cover - model download may fail
         llm_pipeline = None
+        logging.error("Kocdigital LLM could not be loaded: %s", exc)
+    return llm_pipeline
 
 def regex_based_extract_steps(text: str) -> list[str]:
     """Return a list of ordered steps for numbered instructions."""
@@ -96,7 +155,7 @@ def semantic_extract_steps(text: str) -> list[str]:
 
 def llm_extract_steps(text: str) -> list[str]:
     """Use the optional LLM to generate numbered steps from text."""
-    if llm_pipeline is None:
+    if ensure_llm_pipeline() is None:
         raise RuntimeError("LLM pipeline is not available")
 
     prompt = f"""Sen bir Türkçe konuşan süreç analistisin.

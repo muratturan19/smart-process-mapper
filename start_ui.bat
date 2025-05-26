@@ -25,6 +25,9 @@ if %ERRORLEVEL% neq 0 goto install_fail
 python -m spacy link tr_core_news_md tr_core_news_md >> "%BASE_DIR%install.log" 2>&1
 if %ERRORLEVEL% neq 0 goto install_fail
 
+rem Download Kocdigital LLM weights if not already cached
+"%VENV_DIR%\Scripts\huggingface-cli.exe" download KOCDIGITAL/Kocdigital-LLM-8b-v0.1 >> "%BASE_DIR%install.log" 2>&1
+
 rem Record installed packages
 pip list > "%BASE_DIR%installed_packages.log"
 
