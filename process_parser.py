@@ -77,7 +77,8 @@ def parse_and_save(input_file: str, output_file: str = "parsed_steps.json") -> N
     print(f"Parsed steps saved to {output_file}")
 
 
-if __name__ == "__main__":
+def main() -> None:
+    """CLI entry point for ``smart-process-parse``."""
     parser = argparse.ArgumentParser(
         description="Parse a Turkish process description and save ordered steps"
     )
@@ -95,3 +96,7 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     parse_and_save(args.input_file, args.output_file)
+
+
+if __name__ == "__main__":
+    main()
