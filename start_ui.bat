@@ -5,7 +5,7 @@ rem Directory where this script resides
 set BASE_DIR=%~dp0
 set VENV_DIR=%BASE_DIR%venv
 set FLAG_FILE=%VENV_DIR%\installed.flag
-set HF_HOME=%BASE_DIR%hf_cache
+if not defined HF_HOME set HF_HOME=%BASE_DIR%hf_cache
 
 echo BASE_DIR=%BASE_DIR%
 echo VENV_DIR=%VENV_DIR%
