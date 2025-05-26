@@ -5,8 +5,14 @@ rem Directory where this script resides
 set BASE_DIR=%~dp0
 set VENV_DIR=%BASE_DIR%venv
 set FLAG_FILE=%VENV_DIR%\installed.flag
-if not defined HF_HOME set HF_HOME=%BASE_DIR%hf_cache
-if not defined TRANSFORMERS_CACHE set TRANSFORMERS_CACHE=%HF_HOME%
+set CACHE_DIR=%BASE_DIR%hf_cache
+if exist "%CACHE_DIR%\hub\models--KOCDIGITAL--Kocdigital-LLM-8b-v0.1" (
+    set HF_HOME=%CACHE_DIR%
+    set TRANSFORMERS_CACHE=%CACHE_DIR%
+) else (
+    if not defined HF_HOME set HF_HOME=%CACHE_DIR%
+    if not defined TRANSFORMERS_CACHE set TRANSFORMERS_CACHE=%HF_HOME%
+)
 
 echo BASE_DIR=%BASE_DIR%
 echo VENV_DIR=%VENV_DIR%
