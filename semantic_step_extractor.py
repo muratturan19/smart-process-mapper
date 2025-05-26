@@ -99,10 +99,26 @@ def llm_extract_steps(text: str) -> list[str]:
     if llm_pipeline is None:
         raise RuntimeError("LLM pipeline is not available")
 
-    prompt = (
-        "Aşağıdaki metinden işlem adımlarını numaralı liste halinde çıkar:\n\n"
-        f"{text}\n\nAdımlar:"
-    )
+    prompt = f"""Sen bir Türkçe konuşan süreç analistisin.
+    Görevin, verilen metinlerdeki anlatımları dikkatle inceleyip, bunlardan sade, mantıksal ve sıralı işlem adımları oluşturmaktır.
+
+    Her bir adım:
+    - Kısa ve öz olmalı (maks. 15 kelime)
+    - Fiille başlamalı
+    - Gereksiz bağlaç veya detay içermemeli
+    - Gramer açısından doğru olmalı
+
+    Aşağıdaki metni işle ve sadece numaralı işlem adımlarını listele.
+
+    {text}
+
+    Çıktı formatı:
+    1. ...
+    2. ...
+    3. ...
+
+    Adımlar:
+    """
     output = llm_pipeline(prompt, max_new_tokens=256, do_sample=False)[0]["generated_text"]
     lines = output.splitlines()
     steps: list[str] = []
